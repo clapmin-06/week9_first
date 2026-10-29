@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 캐리커처 스튜디오</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎨%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>🎨 AI 캐리커처 스튜디오</h1>
+    <p>사진을 올리고 스타일을 고르면, AI가 새로운 이미지로 바꿔드려요.</p>
+  </header>
+
+  <main class="layout">
+    <!-- 1. 업로드 -->
+    <section class="card">
+      <h2><span class="step">1</span> 사진 업로드</h2>
+      <label id="dropzone" class="dropzone" tabindex="0">
+        <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" hidden />
+        <div id="dropHint">
+          <div class="drop-icon">📷</div>
+          <p><strong>클릭</strong>하거나 사진을 끌어다 놓으세요</p>
+          <small>PNG, JPG, WEBP · 최대 4MB</small>
+        </div>
+        <img id="previewThumb" class="thumb" alt="업로드한 사진 미리보기" hidden />
+      </label>
+      <button id="resetBtn" class="btn ghost" hidden>사진 다시 고르기</button>
+    </section>
+
+    <!-- 2. 스타일 -->
+    <section class="card">
+      <h2><span class="step">2</span> 스타일 선택</h2>
+      <div id="styleList" class="styles" role="radiogroup" aria-label="변환 스타일"></div>
+      <label class="field">
+        <span>추가 요청 (선택)</span>
+        <input type="text" id="extraPrompt" maxlength="120" placeholder="예: 웃는 표정, 파란 배경" />
+      </label>
+    </section>
+
+    <!-- 3. 변환 / 4. 비교 / 5. 다운로드 -->
+    <section class="card result">
+      <h2><span class="step">3</span> 변환 결과</h2>
+      <div class="actions">
+        <button id="transformBtn" class="btn primary" disabled>✨ 이미지 변환하기</button>
+        <button id="downloadBtn" class="btn" disabled>⬇ 다운로드</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <div class="view-tabs" id="viewTabs" hidden>
+        <button class="tab active" data-mode="slider">슬라이더 비교</button>
+        <button class="tab" data-mode="side">나란히 보기</button>
+      </div>
+
+      <div id="empty" class="empty">사진을 업로드하면 여기에 결과가 표시돼요.</div>
+
+      <!-- 슬라이더 비교 -->
+      <div id="compare" class="compare" hidden>
+        <img id="imgAfter" alt="변환된 이미지" />
+        <div class="before-wrap" id="beforeWrap">
+          <img id="imgBefore" alt="원본 이미지" />
+        </div>
+        <span class="tag tag-before">원본</span>
+        <span class="tag tag-after">변환</span>
+        <div class="handle" id="handle"><span>⇆</span></div>
+        <input type="range" id="slider" min="0" max="100" value="50" aria-label="원본과 변환 이미지 비교" />
+      </div>
+
+      <!-- 나란히 보기 -->
+      <div id="side" class="side" hidden>
+        <figure><img id="sideBefore" alt="원본" /><figcaption>원본</figcaption></figure>
+        <figure><img id="sideAfter" alt="변환" /><figcaption>변환</figcaption></figure>
+      </div>
+
+      <div id="loader" class="loader" hidden><div class="spinner"></div><p>AI가 그리는 중…</p></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>현재 모드: <b id="modeLabel">-</b> · API 연결은 <code>script.js</code>의 <code>CONFIG</code>에서 설정</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
